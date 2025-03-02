@@ -1,6 +1,5 @@
 import { Check, ChevronsUpDown, X } from "lucide-react";
-import React, { memo, useState } from "react";
-import { Controller, useFormContext } from "react-hook-form";
+import React, { useState } from "react";
 
 import {
 	Button,
@@ -29,29 +28,35 @@ const LABELS_MAP: LabelMapping = {
 	material: "materials",
 };
 
-export interface FilterMultiSelectProps {
+export interface FilterMultiSelectProps<T extends string> {
 	name: keyof FilterFormValues;
+	value: T[];
+	onChange: (value: T[]) => void;
 }
 
-export const FilterMultiSelect = memo(<T extends string>({ name }: FilterMultiSelectProps) => {
+export const FilterMultiSelect = <T extends string>({ name, value, onChange }: FilterMultiSelectProps<T>) => {
 	const [open, setOpen] = useState(false);
 	const [searchValue, setSearchValue] = useState("");
-	const { control, watch, setValue } = useFormContext<FilterFormValues>();
 
 	const label = LABELS_MAP[name];
 	const enumType = FilterTypeRegistry[name];
-	const values = Object.values(enumType);
-
-	const selectedValues = watch(name) as Array<T>;
+	const options = Object.values(enumType) as T[];
 
 	const clearSearch = () => {
 		setSearchValue("");
 	};
 
 	const clearSelections = () => {
-		setValue(name, []);
+		onChange([]);
 		clearSearch();
 		setOpen(false);
+	};
+
+	const handleSelect = (itemValue: T) => {
+		const includesValue = value.includes(itemValue);
+		const newValue = includesValue ? value.filter((v) => v !== itemValue) : [...value, itemValue];
+
+		onChange(newValue);
 	};
 
 	return (
@@ -64,7 +69,7 @@ export const FilterMultiSelect = memo(<T extends string>({ name }: FilterMultiSe
 						aria-expanded={open}
 						className={"w-full justify-between"}
 					>
-						{selectedValues.length > 0 ? `${selectedValues.length} ${label} selected` : `Select ${label}`}
+						{value.length > 0 ? `${value.length} ${label} selected` : `Select ${label}`}
 						<ChevronsUpDown className={"ml-2 h-4 w-4 shrink-0 opacity-50"} />
 					</Button>
 				</PopoverTrigger>
@@ -92,43 +97,21 @@ export const FilterMultiSelect = memo(<T extends string>({ name }: FilterMultiSe
 						<CommandList>
 							<CommandEmpty>No {label} found.</CommandEmpty>
 							<CommandGroup>
-								<Controller
-									name={name}
-									control={control}
-									render={({ field }) => {
-										const currentValue = field.value as unknown as T[];
-
-										return (
-											<>
-												{values.map((value) => (
-													<CommandItem
-														key={value}
-														onSelect={() => {
-															const newValue = currentValue.includes(value)
-																? currentValue.filter((v) => v !== value)
-																: [...currentValue, value];
-
-															field.onChange(newValue);
-														}}
-														className={
-															"flex cursor-pointer items-center justify-between px-4 py-2"
-														}
-														value={value}
-													>
-														<span>{value}</span>
-														{currentValue.includes(value) && (
-															<Check className={"ml-2 h-4 w-4 flex-shrink-0"} />
-														)}
-													</CommandItem>
-												))}
-											</>
-										);
-									}}
-								/>
+								{options.map((option) => (
+									<CommandItem
+										key={option}
+										onSelect={() => handleSelect(option)}
+										className={"flex cursor-pointer items-center justify-between px-4 py-2"}
+										value={option}
+									>
+										<span>{option}</span>
+										{value.includes(option) && <Check className={"ml-2 h-4 w-4 flex-shrink-0"} />}
+									</CommandItem>
+								))}
 							</CommandGroup>
 						</CommandList>
 					</Command>
-					{selectedValues.length > 0 && (
+					{value.length > 0 && (
 						<div className={"border-t p-2"}>
 							<Button
 								variant={"ghost"}
@@ -143,6 +126,6 @@ export const FilterMultiSelect = memo(<T extends string>({ name }: FilterMultiSe
 			</Popover>
 		</div>
 	);
-});
+};
 
 FilterMultiSelect.displayName = "FilterMultiSelect";
