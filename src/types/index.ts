@@ -82,3 +82,17 @@ export interface Product {
 	category: ProductCategory;
 	options: ProductOptions;
 }
+
+export enum ProductFilter {
+	Category = "category",
+	Type = "type",
+	Color = "color",
+	Material = "material",
+}
+
+export const FilterTypeRegistry = {
+	[ProductFilter.Category]: ProductCategory,
+	[ProductFilter.Type]: ProductType,
+	[ProductFilter.Color]: ProductColor,
+	[ProductFilter.Material]: ProductMaterial,
+} as const;
