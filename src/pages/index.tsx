@@ -2,6 +2,7 @@ import fs from "fs";
 import { GetServerSideProps } from "next";
 import path from "path";
 
+import { Container, ProductCard, ProductGrid } from "@/components";
 import { Product } from "@/types";
 
 export interface HomeProps {
@@ -9,9 +10,17 @@ export interface HomeProps {
 }
 
 export default function Home({ products }: HomeProps) {
-	console.log(products);
-
-	return <div>page</div>;
+	return (
+		<Container>
+			<main>
+				<ProductGrid>
+					{products.map((product) => (
+						<ProductCard key={product.id} product={product} />
+					))}
+				</ProductGrid>
+			</main>
+		</Container>
+	);
 }
 
 export const getServerSideProps: GetServerSideProps<{ products: Array<Product> }> = async () => {
