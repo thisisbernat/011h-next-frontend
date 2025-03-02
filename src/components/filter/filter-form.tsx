@@ -38,10 +38,10 @@ export const FilterForm = ({ onSubmit, defaultValues, className, ...props }: Fil
 	return (
 		<FormProvider {...methods}>
 			<div className={cn("grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4", className)} {...props}>
-				<FilterMultiSelect<ProductCategory> name={ProductFilter.Category} />
-				<FilterMultiSelect<ProductType> name={ProductFilter.Type} />
-				<FilterMultiSelect<ProductColor> name={ProductFilter.Color} />
-				<FilterMultiSelect<ProductMaterial> name={ProductFilter.Material} />
+				<FilterMultiSelect name={ProductFilter.Category} />
+				<FilterMultiSelect name={ProductFilter.Type} />
+				<FilterMultiSelect name={ProductFilter.Color} />
+				<FilterMultiSelect name={ProductFilter.Material} />
 			</div>
 		</FormProvider>
 	);
