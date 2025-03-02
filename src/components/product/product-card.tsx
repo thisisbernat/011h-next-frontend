@@ -12,7 +12,7 @@ import {
 	TooltipContent,
 	TooltipProvider,
 	TooltipTrigger,
-} from "./ui";
+} from "../ui";
 
 export const ProductCard = ({ product }: { product: Product }) => {
 	// const [isFavorite, setIsFavorite] = useState(false);
