@@ -1,5 +1,5 @@
 import { Check, ChevronsUpDown, X } from "lucide-react";
-import React, { useState } from "react";
+import React, { memo, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 
 import {
@@ -33,7 +33,7 @@ export interface FilterMultiSelectProps {
 	name: keyof FilterFormValues;
 }
 
-export const FilterMultiSelect = <T extends string>({ name }: FilterMultiSelectProps) => {
+export const FilterMultiSelect = memo(<T extends string>({ name }: FilterMultiSelectProps) => {
 	const [open, setOpen] = useState(false);
 	const [searchValue, setSearchValue] = useState("");
 	const { control, watch, setValue } = useFormContext<FilterFormValues>();
@@ -143,4 +143,6 @@ export const FilterMultiSelect = <T extends string>({ name }: FilterMultiSelectP
 			</Popover>
 		</div>
 	);
-};
+});
+
+FilterMultiSelect.displayName = "FilterMultiSelect";
