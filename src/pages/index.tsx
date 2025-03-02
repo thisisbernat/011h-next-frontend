@@ -2,16 +2,19 @@ import fs from "fs";
 import { GetServerSideProps } from "next";
 import path from "path";
 
-import { Container, ProductCard, ProductGrid } from "@/components";
+import { Container, FilterForm, ProductCard, ProductGrid } from "@/components";
 import { Product } from "@/types";
 
 export interface HomeProps {
 	products: Array<Product>;
 }
 
-export default function Home({ products }: HomeProps) {
+const Home = ({ products }: HomeProps) => {
 	return (
 		<Container>
+			<nav>
+				<FilterForm onSubmit={(values) => console.log("onSubmit", values)} />
+			</nav>
 			<main>
 				<ProductGrid>
 					{products.map((product) => (
@@ -21,7 +24,7 @@ export default function Home({ products }: HomeProps) {
 			</main>
 		</Container>
 	);
-}
+};
 
 export const getServerSideProps: GetServerSideProps<{ products: Array<Product> }> = async () => {
 	try {
@@ -37,3 +40,5 @@ export const getServerSideProps: GetServerSideProps<{ products: Array<Product> }
 		return { props: { products: [] } };
 	}
 };
+
+export default Home;
