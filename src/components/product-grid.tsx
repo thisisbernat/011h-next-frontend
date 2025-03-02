@@ -2,9 +2,9 @@ import { ComponentProps } from "react";
 
 import { cn } from "@/lib/utils";
 
-export type ContainerProps = ComponentProps<"div">;
+export type ProductGridProps = ComponentProps<"div">;
 
-export const ProductGrid = ({ children, className, ...props }: ContainerProps) => {
+export const ProductGrid = ({ children, className, ...props }: ProductGridProps) => {
 	return (
 		<div
 			className={cn(
