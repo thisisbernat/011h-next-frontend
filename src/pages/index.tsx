@@ -1,8 +1,9 @@
 import fs from "fs";
 import { GetServerSideProps } from "next";
 import path from "path";
+import { useCallback } from "react";
 
-import { Container, FilterForm, ProductCard, ProductGrid } from "@/components";
+import { Container, FilterForm, FilterFormValues, ProductCard, ProductGrid } from "@/components";
 import { Product } from "@/types";
 
 export interface HomeProps {
@@ -10,10 +11,12 @@ export interface HomeProps {
 }
 
 const Home = ({ products }: HomeProps) => {
+	const onSubmit = useCallback((values: FilterFormValues) => console.log("onSubmit", values), []);
+
 	return (
 		<Container>
 			<nav>
-				<FilterForm onSubmit={(values) => console.log("onSubmit", values)} />
+				<FilterForm onSubmit={onSubmit} />
 			</nav>
 			<main>
 				<ProductGrid>
