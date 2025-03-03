@@ -1,46 +1,66 @@
 import fs from "fs";
 import { GetServerSideProps } from "next";
+import Head from "next/head";
 import path from "path";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 
-import { Container, FilterForm, FilterFormValues, ProductCard, ProductGrid } from "@/components";
+import { Container, FilterForm, FilterFormValues, ProductCard, ProductEmptyState, ProductGrid } from "@/components";
+import { filterProducts } from "@/lib/utils";
 import { Product } from "@/types";
 
 export interface HomeProps {
-	products: Array<Product>;
+	results: Array<Product>;
 }
 
-const Home = ({ products }: HomeProps) => {
-	const onSubmit = useCallback((values: FilterFormValues) => console.log("onSubmit", values), []);
+const Home = ({ results }: HomeProps) => {
+	const [products, setProducts] = useState(results);
+
+	const onSubmit = useCallback(
+		(values: FilterFormValues) => {
+			const filteredProducts = filterProducts(values, results);
+			setProducts(filteredProducts);
+		},
+		[results],
+	);
 
 	return (
-		<Container>
-			<nav>
-				<FilterForm onSubmit={onSubmit} />
-			</nav>
-			<main>
-				<ProductGrid>
-					{products.map((product) => (
-						<ProductCard key={product.id} product={product} />
-					))}
-				</ProductGrid>
-			</main>
-		</Container>
+		<>
+			<Head>
+				<title>011h - Frontend Challenge</title>
+			</Head>
+
+			<Container className={"min-h-screen"}>
+				<nav className={"py-6"}>
+					<FilterForm onSubmit={onSubmit} />
+				</nav>
+				<main className={"flex flex-grow items-start"}>
+					{products.length > 0 ? (
+						<ProductGrid>
+							{products.map((product) => (
+								<ProductCard key={product.id} product={product} />
+							))}
+						</ProductGrid>
+					) : (
+						<ProductEmptyState />
+					)}
+				</main>
+			</Container>
+		</>
 	);
 };
 
-export const getServerSideProps: GetServerSideProps<{ products: Array<Product> }> = async () => {
+export const getServerSideProps: GetServerSideProps<HomeProps> = async () => {
 	try {
 		const filePath = path.join(process.cwd(), "data", "products.json");
 		const jsonData = fs.readFileSync(filePath, "utf8");
 
 		const data: Array<Product> = JSON.parse(jsonData);
 
-		return { props: { products: data } };
+		return { props: { results: data } };
 	} catch (error) {
 		console.error("Error loading JSON:", error);
 
-		return { props: { products: [] } };
+		return { props: { results: [] } };
 	}
 };
 
