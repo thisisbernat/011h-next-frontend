@@ -8,6 +8,7 @@ import {
 	FilterForm,
 	FilterFormValues,
 	Footer,
+	Main,
 	Page,
 	ProductCard,
 	ProductEmptyState,
@@ -33,11 +34,9 @@ const Home = ({ results }: HomeProps) => {
 
 	return (
 		<Page>
-			<Container className={"min-h-screen"}>
-				<nav className={"py-6"}>
-					<FilterForm onSubmit={onSubmit} />
-				</nav>
-				<main className={"flex flex-grow items-start"}>
+			<Container>
+				<FilterForm onSubmit={onSubmit} />
+				<Main>
 					{products.length > 0 ? (
 						<ProductGrid>
 							{products.map((product) => (
@@ -47,7 +46,7 @@ const Home = ({ results }: HomeProps) => {
 					) : (
 						<ProductEmptyState />
 					)}
-				</main>
+				</Main>
 				<Footer />
 			</Container>
 		</Page>
