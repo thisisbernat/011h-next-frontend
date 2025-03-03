@@ -8,6 +8,7 @@ import { ProductCategory, ProductColor, ProductFilter, ProductMaterial, ProductT
 import { Button } from "../ui";
 
 import { FilterMultiSelect } from "./filter-multi-select";
+import { FilterSortButton } from "./filter-sort-button";
 
 export type FilterFormValues = {
 	[ProductFilter.Category]: Array<ProductCategory>;
@@ -118,7 +119,7 @@ export const FilterForm = ({ onSubmit, defaultValues, className, ...props }: Fil
 
 	return (
 		<div className={"flex gap-4"}>
-			<div className={cn("grid flex-grow grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4", className)} {...props}>
+			<div className={cn("grid flex-grow grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-5", className)} {...props}>
 				<FilterMultiSelect
 					name={ProductFilter.Category}
 					value={currentValues[ProductFilter.Category]}
@@ -139,6 +140,7 @@ export const FilterForm = ({ onSubmit, defaultValues, className, ...props }: Fil
 					value={currentValues[ProductFilter.Material]}
 					onChange={(values) => handleFilterChange(ProductFilter.Material, values, setMaterialParams)}
 				/>
+				<FilterSortButton />
 			</div>
 			<Button variant={"default"} onClick={resetAllFilters} className={"max-w-12"}>
 				<ListRestart />
