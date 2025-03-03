@@ -14,23 +14,10 @@ import {
 	PopoverTrigger,
 } from "@/components/ui";
 import { cn } from "@/lib/utils";
-import { FilterTypeRegistry } from "@/types";
-
-import { FilterFormValues } from "./use-filter-params";
-
-export type LabelMapping = {
-	[K in keyof FilterFormValues]: string;
-};
-
-const LABELS_MAP: LabelMapping = {
-	category: "categories",
-	type: "types",
-	color: "colors",
-	material: "materials",
-};
+import { FilterTypeRegistry, ProductFilter } from "@/types";
 
 export interface FilterMultiSelectProps<T extends string> {
-	name: keyof Omit<FilterFormValues, "sortSize">;
+	name: Exclude<ProductFilter, ProductFilter.SortSize>;
 	value: T[];
 	onChange: (value: T[]) => void;
 	className?: string;
@@ -45,8 +32,8 @@ export const FilterMultiSelect = <T extends string>({
 	const [open, setOpen] = useState(false);
 	const [searchValue, setSearchValue] = useState("");
 
-	const label = LABELS_MAP[name];
-	const enumType = FilterTypeRegistry[name];
+	const label = FilterTypeRegistry[name].label;
+	const enumType = FilterTypeRegistry[name].enum;
 	const options = Object.values(enumType) as T[];
 
 	const clearSearch = () => {

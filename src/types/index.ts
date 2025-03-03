@@ -92,10 +92,10 @@ export enum ProductFilter {
 }
 
 export const FilterTypeRegistry = {
-	[ProductFilter.Category]: ProductCategory,
-	[ProductFilter.Type]: ProductType,
-	[ProductFilter.Color]: ProductColor,
-	[ProductFilter.Material]: ProductMaterial,
+	[ProductFilter.Category]: { enum: ProductCategory, label: "categories" },
+	[ProductFilter.Type]: { enum: ProductType, label: "types" },
+	[ProductFilter.Color]: { enum: ProductColor, label: "colors" },
+	[ProductFilter.Material]: { enum: ProductMaterial, label: "materials" },
 } as const;
 
 export type SizeSortDirection = "asc" | "desc";
