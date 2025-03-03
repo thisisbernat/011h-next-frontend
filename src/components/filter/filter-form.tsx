@@ -117,11 +117,8 @@ export const FilterForm = ({ onSubmit, defaultValues, className, ...props }: Fil
 	};
 
 	return (
-		<div className={"grid grid-cols-12 gap-4"}>
-			<div
-				className={cn("col-span-11 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4", className)}
-				{...props}
-			>
+		<div className={"flex gap-4"}>
+			<div className={cn("grid flex-grow grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4", className)} {...props}>
 				<FilterMultiSelect
 					name={ProductFilter.Category}
 					value={currentValues[ProductFilter.Category]}
@@ -143,7 +140,7 @@ export const FilterForm = ({ onSubmit, defaultValues, className, ...props }: Fil
 					onChange={(values) => handleFilterChange(ProductFilter.Material, values, setMaterialParams)}
 				/>
 			</div>
-			<Button variant={"default"} onClick={resetAllFilters} className={"col-span-1 max-w-12"}>
+			<Button variant={"default"} onClick={resetAllFilters} className={"max-w-12"}>
 				<ListRestart />
 			</Button>
 		</div>

@@ -28,7 +28,6 @@ const Home = ({ results }: HomeProps) => {
 			<Head>
 				<title>011h - Frontend Challenge</title>
 			</Head>
-
 			<Container className={"min-h-screen"}>
 				<nav className={"py-6"}>
 					<FilterForm onSubmit={onSubmit} />
