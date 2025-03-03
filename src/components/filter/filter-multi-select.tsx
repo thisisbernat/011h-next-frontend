@@ -30,7 +30,7 @@ const LABELS_MAP: LabelMapping = {
 };
 
 export interface FilterMultiSelectProps<T extends string> {
-	name: keyof FilterFormValues;
+	name: keyof Omit<FilterFormValues, "sortSize">;
 	value: T[];
 	onChange: (value: T[]) => void;
 	className?: string;
