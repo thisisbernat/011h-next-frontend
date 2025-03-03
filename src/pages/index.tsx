@@ -1,10 +1,18 @@
 import fs from "fs";
 import { GetServerSideProps } from "next";
-import Head from "next/head";
 import path from "path";
 import { useCallback, useState } from "react";
 
-import { Container, FilterForm, FilterFormValues, ProductCard, ProductEmptyState, ProductGrid } from "@/components";
+import {
+	Container,
+	FilterForm,
+	FilterFormValues,
+	Footer,
+	Page,
+	ProductCard,
+	ProductEmptyState,
+	ProductGrid,
+} from "@/components";
 import { filterProducts } from "@/lib/utils";
 import { Product } from "@/types";
 
@@ -24,10 +32,7 @@ const Home = ({ results }: HomeProps) => {
 	);
 
 	return (
-		<>
-			<Head>
-				<title>011h - Frontend Challenge</title>
-			</Head>
+		<Page>
 			<Container className={"min-h-screen"}>
 				<nav className={"py-6"}>
 					<FilterForm onSubmit={onSubmit} />
@@ -43,8 +48,9 @@ const Home = ({ results }: HomeProps) => {
 						<ProductEmptyState />
 					)}
 				</main>
+				<Footer />
 			</Container>
-		</>
+		</Page>
 	);
 };
 
