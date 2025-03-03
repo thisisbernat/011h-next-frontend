@@ -15,8 +15,6 @@ import {
 } from "../ui";
 
 export const ProductCard = ({ product }: { product: Product }) => {
-	// const [isFavorite, setIsFavorite] = useState(false);
-
 	return (
 		<Card className={"gap-0 overflow-hidden px-0 pt-0 pb-4"}>
 			<div className={"relative"}>
@@ -27,20 +25,6 @@ export const ProductCard = ({ product }: { product: Product }) => {
 						className={"h-full w-full object-cover transition-transform duration-300 hover:scale-105"}
 					/>
 				</div>
-				{/* <button
-					onClick={() => setIsFavorite(!isFavorite)}
-					className={
-						"absolute top-3 right-3 rounded-full bg-white p-2 shadow-md transition-all hover:bg-gray-100"
-					}
-					aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
-				>
-					<Heart
-						className={cn("h-5 w-5", {
-							"fill-red-500 text-red-500": isFavorite,
-							"text-gray-600": !isFavorite,
-						})}
-					/>
-				</button> */}
 			</div>
 			<CardHeader className={"p-4"}>
 				<div className={"flex items-start justify-between"}>
