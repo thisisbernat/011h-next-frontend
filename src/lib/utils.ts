@@ -53,3 +53,16 @@ export const sortProducts = (products: Array<Product>, direction: SizeSortDirect
 		return direction === "asc" ? sizeA - sizeB : sizeB - sizeA;
 	});
 };
+
+export const processProducts = (filterValues: FilterFormValues, products: Array<Product>): Array<Product> => {
+	const { sortSize, ...restOfValues } = filterValues;
+	const filteredProducts = filterProducts(restOfValues, products);
+
+	if (sortSize) {
+		const sortedProducts = sortProducts(filteredProducts, sortSize);
+
+		return sortedProducts;
+	}
+
+	return filteredProducts;
+};
