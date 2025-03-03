@@ -12,6 +12,7 @@ export const ProductEmptyState = ({ className, ...props }: ProductEmptyStateProp
 				"bg-muted mt-10 flex flex-grow flex-col items-center justify-center gap-8 py-28 outline-1",
 				className,
 			)}
+			data-testid={"product-empty-state"}
 			{...props}
 		>
 			<p className={"text-2xl font-bold"}>No products found</p>

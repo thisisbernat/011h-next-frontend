@@ -26,6 +26,7 @@ export const FilterForm = ({ onSubmit, defaultValues, className, containerClassN
 		<nav className={cn("flex gap-4 py-6", containerClassName)}>
 			<div
 				className={cn("grid w-full flex-grow grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-10", className)}
+				data-testid={"filter-form"}
 				{...props}
 			>
 				<FilterMultiSelect
@@ -77,7 +78,12 @@ export const FilterForm = ({ onSubmit, defaultValues, className, containerClassN
 					<span>Reset all filters</span>
 				</Button>
 			</div>
-			<Button variant={"secondary"} onClick={resetAllFilters} className={"hidden max-w-12 xl:block"}>
+			<Button
+				variant={"secondary"}
+				onClick={resetAllFilters}
+				className={"hidden max-w-12 xl:block"}
+				aria-label={"Reset all filters"}
+			>
 				<ListRestart />
 			</Button>
 		</nav>

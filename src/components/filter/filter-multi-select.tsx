@@ -97,6 +97,7 @@ export const FilterMultiSelect = <T extends string>({
 										onSelect={() => handleSelect(option)}
 										className={"flex cursor-pointer items-center justify-between px-4 py-2"}
 										value={option}
+										data-testid={"command-item"}
 									>
 										<span>{option}</span>
 										{value.includes(option) && <Check className={"ml-2 h-4 w-4 flex-shrink-0"} />}

@@ -16,7 +16,7 @@ import {
 
 export const ProductCard = ({ product }: { product: Product }) => {
 	return (
-		<Card className={"gap-0 overflow-hidden px-0 pt-0 pb-4"}>
+		<Card className={"gap-0 overflow-hidden px-0 pt-0 pb-4"} data-testid={"product-card"}>
 			<div className={"relative"}>
 				<div className={"bg-muted aspect-[4/3] overflow-hidden"}>
 					<img
@@ -31,12 +31,15 @@ export const ProductCard = ({ product }: { product: Product }) => {
 					<div>
 						<h3 className={"line-clamp-1 text-xl font-semibold"}>{product.name}</h3>
 						<p className={"text-muted-foreground text-md"}>
-							{product.category} · {product.type}
+							<span data-testid={"product-category"}>{product.category}</span> ·
+							<span data-testid={"product-type"}>{product.type}</span>
 						</p>
 					</div>
 
 					<div className={"bg-muted flex h-10 w-10 items-center justify-center rounded-full"}>
-						<p className={"text-lg font-bold"}>{product.size}</p>
+						<p className={"text-lg font-bold"} data-testid={"product-size"}>
+							{product.size}
+						</p>
 					</div>
 				</div>
 			</CardHeader>
@@ -44,11 +47,15 @@ export const ProductCard = ({ product }: { product: Product }) => {
 				<div className={"mx-auto grid grid-cols-2 gap-6"}>
 					<div className={"bg-muted rounded-md p-2 text-center"}>
 						<span className={"text-muted-foreground text-xs"}>Color</span>
-						<p className="font-medium">{product.color}</p>
+						<p className="font-medium" data-testid={"product-color"}>
+							{product.color}
+						</p>
 					</div>
 					<div className={"bg-muted rounded-md p-2 text-center"}>
 						<span className={"text-muted-foreground text-xs"}>Material</span>
-						<p className="font-medium">{product.material}</p>
+						<p className="font-medium" data-testid={"product-material"}>
+							{product.material}
+						</p>
 					</div>
 				</div>
 			</CardContent>
