@@ -13,6 +13,7 @@ import {
 	PopoverContent,
 	PopoverTrigger,
 } from "@/components/ui";
+import { cn } from "@/lib/utils";
 import { FilterTypeRegistry, ProductFilter } from "@/types";
 
 import { FilterFormValues } from "./use-filter-params";
@@ -32,9 +33,15 @@ export interface FilterMultiSelectProps<T extends string> {
 	name: ProductFilter;
 	value: T[];
 	onChange: (value: T[]) => void;
+	className?: string;
 }
 
-export const FilterMultiSelect = <T extends string>({ name, value, onChange }: FilterMultiSelectProps<T>) => {
+export const FilterMultiSelect = <T extends string>({
+	name,
+	value,
+	onChange,
+	className,
+}: FilterMultiSelectProps<T>) => {
 	const [open, setOpen] = useState(false);
 	const [searchValue, setSearchValue] = useState("");
 
@@ -60,7 +67,7 @@ export const FilterMultiSelect = <T extends string>({ name, value, onChange }: F
 	};
 
 	return (
-		<div className={"w-full min-w-56"}>
+		<div className={cn("w-full min-w-56", className)}>
 			<Popover open={open} onOpenChange={setOpen}>
 				<PopoverTrigger asChild>
 					<Button
