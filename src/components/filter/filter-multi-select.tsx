@@ -13,9 +13,9 @@ import {
 	PopoverContent,
 	PopoverTrigger,
 } from "@/components/ui";
-import { FilterTypeRegistry } from "@/types";
+import { FilterTypeRegistry, ProductFilter } from "@/types";
 
-import { FilterFormValues } from "./filter-form";
+import { FilterFormValues } from "./use-filter-params";
 
 export type LabelMapping = {
 	[K in keyof FilterFormValues]: string;
@@ -29,7 +29,7 @@ const LABELS_MAP: LabelMapping = {
 };
 
 export interface FilterMultiSelectProps<T extends string> {
-	name: keyof FilterFormValues;
+	name: ProductFilter;
 	value: T[];
 	onChange: (value: T[]) => void;
 }
