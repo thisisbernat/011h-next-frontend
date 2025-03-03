@@ -88,7 +88,7 @@ export enum ProductFilter {
 	Type = "type",
 	Color = "color",
 	Material = "material",
-	Size = "size",
+	SortSize = "sortSize",
 }
 
 export const FilterTypeRegistry = {

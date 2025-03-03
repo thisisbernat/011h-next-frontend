@@ -17,15 +17,7 @@ export interface FilterFormProps extends Omit<ComponentProps<"div">, "onSubmit">
 }
 
 export const FilterForm = ({ onSubmit, defaultValues, className, containerClassName, ...props }: FilterFormProps) => {
-	const {
-		filterValues: filterValues,
-		setCategoryParams,
-		setTypeParams,
-		setColorParams,
-		setMaterialParams,
-		handleFilterChange,
-		resetAllFilters,
-	} = useFilterParams({
+	const { filterValues, handleFilterChange, handleSortSizeChange, resetAllFilters } = useFilterParams({
 		defaultValues,
 		onFiltersChange: onSubmit,
 	});
@@ -39,34 +31,42 @@ export const FilterForm = ({ onSubmit, defaultValues, className, containerClassN
 				<FilterMultiSelect
 					name={ProductFilter.Category}
 					value={filterValues[ProductFilter.Category]}
-					onChange={(values) => handleFilterChange(ProductFilter.Category, values, setCategoryParams)}
+					onChange={(values) => handleFilterChange(ProductFilter.Category, values)}
 					className={"col-span-full md:col-span-1 xl:col-span-2"}
 				/>
 				<FilterMultiSelect
 					name={ProductFilter.Type}
 					value={filterValues[ProductFilter.Type]}
-					onChange={(values) => handleFilterChange(ProductFilter.Type, values, setTypeParams)}
+					onChange={(values) => handleFilterChange(ProductFilter.Type, values)}
 					className={"col-span-full md:col-span-1 xl:col-span-2"}
 				/>
 				<FilterMultiSelect
 					name={ProductFilter.Color}
 					value={filterValues[ProductFilter.Color]}
-					onChange={(values) => handleFilterChange(ProductFilter.Color, values, setColorParams)}
+					onChange={(values) => handleFilterChange(ProductFilter.Color, values)}
 					className={"col-span-full md:col-span-1 xl:col-span-2"}
 				/>
 				<FilterMultiSelect
 					name={ProductFilter.Material}
 					value={filterValues[ProductFilter.Material]}
-					onChange={(values) => handleFilterChange(ProductFilter.Material, values, setMaterialParams)}
+					onChange={(values) => handleFilterChange(ProductFilter.Material, values)}
 					className={"col-span-full md:col-span-1 xl:col-span-2"}
 				/>
-				<Button variant={"outline"} className={"col-span-full md:col-span-1"}>
+				<Button
+					variant={"outline"}
+					className={"col-span-full md:col-span-1"}
+					onClick={() => handleSortSizeChange("asc")}
+				>
 					<ArrowUpNarrowWide />
-					<span>Price asc</span>
+					<span>Size asc</span>
 				</Button>
-				<Button variant={"outline"} className={"col-span-full md:col-span-1"}>
+				<Button
+					variant={"outline"}
+					className={"col-span-full md:col-span-1"}
+					onClick={() => handleSortSizeChange("desc")}
+				>
 					<ArrowDownWideNarrow />
-					<span>Price desc</span>
+					<span>Size desc</span>
 				</Button>
 				<Button
 					variant={"secondary"}

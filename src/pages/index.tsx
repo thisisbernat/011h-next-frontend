@@ -14,7 +14,7 @@ import {
 	ProductEmptyState,
 	ProductGrid,
 } from "@/components";
-import { filterProducts } from "@/lib/utils";
+import { filterProducts, sortProducts } from "@/lib/utils";
 import { Product } from "@/types";
 
 export interface HomeProps {
@@ -26,7 +26,16 @@ const Home = ({ results }: HomeProps) => {
 
 	const onSubmit = useCallback(
 		(values: FilterFormValues) => {
-			const filteredProducts = filterProducts(values, results);
+			const { sortSize, ...restOfValues } = values;
+			const filteredProducts = filterProducts(restOfValues, results);
+
+			if (sortSize) {
+				const sortedProducts = sortProducts(filteredProducts, sortSize);
+				setProducts(sortedProducts);
+
+				return;
+			}
+
 			setProducts(filteredProducts);
 		},
 		[results],

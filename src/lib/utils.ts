@@ -8,7 +8,10 @@ export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
 }
 
-export const filterProducts = (filterValues: FilterFormValues, products: Array<Product>): Array<Product> => {
+export const filterProducts = (
+	filterValues: Omit<FilterFormValues, "sortSize">,
+	products: Array<Product>,
+): Array<Product> => {
 	// If no filters are applied (all filter arrays are empty), return all products
 	const hasActiveFilters = Object.values(filterValues).some((filterArray) => filterArray.length > 0);
 

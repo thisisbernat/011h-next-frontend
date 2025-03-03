@@ -1,13 +1,14 @@
 import { parseAsArrayOf, parseAsString, useQueryState } from "nuqs";
 import { useEffect, useMemo } from "react";
 
-import { ProductCategory, ProductColor, ProductFilter, ProductMaterial, ProductType } from "@/types";
+import { ProductCategory, ProductColor, ProductFilter, ProductMaterial, ProductType, SizeSortDirection } from "@/types";
 
 export type FilterFormValues = {
 	[ProductFilter.Category]: Array<ProductCategory>;
 	[ProductFilter.Type]: Array<ProductType>;
 	[ProductFilter.Color]: Array<ProductColor>;
 	[ProductFilter.Material]: Array<ProductMaterial>;
+	[ProductFilter.SortSize]: SizeSortDirection | null;
 };
 
 interface UseFilterParamsProps {
@@ -18,24 +19,32 @@ interface UseFilterParamsProps {
 export function useFilterParams({ defaultValues, onFiltersChange }: UseFilterParamsProps = {}) {
 	// Initialize query parameters for each filter type
 	const [categoryParams, setCategoryParams] = useQueryState(
-		ProductFilter.Category.toLowerCase(),
+		ProductFilter.Category,
 		parseAsArrayOf(parseAsString).withDefault([]),
 	);
 
 	const [typeParams, setTypeParams] = useQueryState(
-		ProductFilter.Type.toLowerCase(),
+		ProductFilter.Type,
 		parseAsArrayOf(parseAsString).withDefault([]),
 	);
 
 	const [colorParams, setColorParams] = useQueryState(
-		ProductFilter.Color.toLowerCase(),
+		ProductFilter.Color,
 		parseAsArrayOf(parseAsString).withDefault([]),
 	);
 
 	const [materialParams, setMaterialParams] = useQueryState(
-		ProductFilter.Material.toLowerCase(),
+		ProductFilter.Material,
 		parseAsArrayOf(parseAsString).withDefault([]),
 	);
+
+	const [sortSizeParams, setSortSizeParams] = useQueryState<SizeSortDirection | null>(ProductFilter.SortSize, {
+		defaultValue: null,
+		parse: (value): SizeSortDirection | null => {
+			return value === "asc" || value === "desc" ? value : null;
+		},
+		serialize: (value: SizeSortDirection | null) => value ?? "",
+	});
 
 	// Initialize with default values if provided and URL params are empty
 	useEffect(() => {
@@ -51,6 +60,9 @@ export function useFilterParams({ defaultValues, onFiltersChange }: UseFilterPar
 		if (defaultValues?.material && materialParams.length === 0) {
 			void setMaterialParams(defaultValues.material);
 		}
+		if (defaultValues?.sortSize) {
+			void setSortSizeParams(defaultValues.sortSize);
+		}
 	}, [
 		categoryParams.length,
 		typeParams.length,
@@ -61,6 +73,7 @@ export function useFilterParams({ defaultValues, onFiltersChange }: UseFilterPar
 		setTypeParams,
 		setColorParams,
 		setMaterialParams,
+		setSortSizeParams,
 	]);
 
 	// Derive current filter values from URL parameters
@@ -70,8 +83,9 @@ export function useFilterParams({ defaultValues, onFiltersChange }: UseFilterPar
 			[ProductFilter.Type]: typeParams as ProductType[],
 			[ProductFilter.Color]: colorParams as ProductColor[],
 			[ProductFilter.Material]: materialParams as ProductMaterial[],
+			[ProductFilter.SortSize]: sortSizeParams as SizeSortDirection | null,
 		}),
-		[categoryParams, typeParams, colorParams, materialParams],
+		[categoryParams, typeParams, colorParams, materialParams, sortSizeParams],
 	);
 
 	// Apply initial filters on initial mount
@@ -82,19 +96,34 @@ export function useFilterParams({ defaultValues, onFiltersChange }: UseFilterPar
 
 	// Handle filter changes
 	const handleFilterChange = async (
-		filterName: keyof FilterFormValues,
+		filterName: ProductFilter.Category | ProductFilter.Type | ProductFilter.Color | ProductFilter.Material,
 		values: Array<ProductCategory | ProductType | ProductColor | ProductMaterial>,
-		setParamsFn: (value: string[] | ((old: string[]) => string[] | null) | null) => Promise<URLSearchParams>,
 	) => {
+		const setParamsFn = {
+			[ProductFilter.Category]: setCategoryParams,
+			[ProductFilter.Type]: setTypeParams,
+			[ProductFilter.Color]: setColorParams,
+			[ProductFilter.Material]: setMaterialParams,
+		}[filterName];
+
 		await setParamsFn(values.length ? values : []);
 
-		// Create a new filter values object with updated values
 		const updatedValues: FilterFormValues = {
 			...filterValues,
 			[filterName]: values,
 		};
 
-		// Call onFiltersChange with the updated filter values
+		onFiltersChange?.(updatedValues);
+	};
+
+	const handleSortSizeChange = async (value: SizeSortDirection | null) => {
+		await setSortSizeParams(value);
+
+		const updatedValues: FilterFormValues = {
+			...filterValues,
+			[ProductFilter.SortSize]: value,
+		};
+
 		onFiltersChange?.(updatedValues);
 	};
 
@@ -104,22 +133,21 @@ export function useFilterParams({ defaultValues, onFiltersChange }: UseFilterPar
 		await setTypeParams([]);
 		await setColorParams([]);
 		await setMaterialParams([]);
+		await setSortSizeParams(null);
 
 		onFiltersChange?.({
 			[ProductFilter.Category]: [],
 			[ProductFilter.Type]: [],
 			[ProductFilter.Color]: [],
 			[ProductFilter.Material]: [],
+			[ProductFilter.SortSize]: null,
 		});
 	};
 
 	return {
 		filterValues,
-		setCategoryParams,
-		setTypeParams,
-		setColorParams,
-		setMaterialParams,
 		handleFilterChange,
+		handleSortSizeChange,
 		resetAllFilters,
 	};
 }
