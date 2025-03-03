@@ -2,7 +2,7 @@ import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
 import { FilterFormValues } from "@/components";
-import { Product, ProductFilter } from "@/types";
+import { Product, ProductFilter, ProductSortOrder, SizeSortDirection } from "@/types";
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
@@ -37,5 +37,16 @@ export const filterProducts = (filterValues: FilterFormValues, products: Array<P
 		}
 
 		return false;
+	});
+};
+
+export const sortProducts = (products: Array<Product>, direction: SizeSortDirection = "asc"): Array<Product> => {
+	return [...products].sort((a, b) => {
+		// Get the numerical order value for each size
+		const sizeA = ProductSortOrder[a.size];
+		const sizeB = ProductSortOrder[b.size];
+
+		// Sort based on the direction
+		return direction === "asc" ? sizeA - sizeB : sizeB - sizeA;
 	});
 };

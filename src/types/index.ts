@@ -88,6 +88,7 @@ export enum ProductFilter {
 	Type = "type",
 	Color = "color",
 	Material = "material",
+	Size = "size",
 }
 
 export const FilterTypeRegistry = {
@@ -96,3 +97,13 @@ export const FilterTypeRegistry = {
 	[ProductFilter.Color]: ProductColor,
 	[ProductFilter.Material]: ProductMaterial,
 } as const;
+
+export type SizeSortDirection = "asc" | "desc";
+
+export const ProductSortOrder: Record<ProductSize, number> = {
+	[ProductSize.XS]: 1,
+	[ProductSize.S]: 2,
+	[ProductSize.M]: 3,
+	[ProductSize.L]: 4,
+	[ProductSize.XL]: 5,
+};
