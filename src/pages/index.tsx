@@ -26,6 +26,7 @@ const Home = ({ results }: HomeProps) => {
 
 	const onSubmit = useCallback(
 		(values: FilterFormValues) => {
+			// Here we would call the API again with the selected params and update the products state
 			const processedProducts = processProducts(values, results);
 
 			setProducts(processedProducts);
@@ -55,6 +56,7 @@ const Home = ({ results }: HomeProps) => {
 };
 
 export const getServerSideProps: GetServerSideProps<HomeProps> = async () => {
+	// This would be an API call, ideally paginated
 	try {
 		const filePath = path.join(process.cwd(), "data", "products.json");
 		const jsonData = fs.readFileSync(filePath, "utf8");
